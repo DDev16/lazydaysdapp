@@ -1,11 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Web3Context } from '../utils/Web3Provider';
-import { NFTStorage, File } from 'nft.storage';
-import './BatchMint.css';
-
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { File, NFTStorage } from 'nft.storage';
 
-
+import { Web3Context } from '../utils/Web3Provider';
+import './BatchMint.css';
 
 const BatchMint = () => {
   const { web3, contract } = useContext(Web3Context);
@@ -15,21 +13,23 @@ const BatchMint = () => {
   const [mintSuccess, setMintSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [useSharedData, setUseSharedData] = useState(false);
+  const [mintingFee] = useState(50); // Specify the minting fee in Ether
 
-  const nftStorageToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdGOTA4QjNBRDJGMDFGNjE2MjU1MTA0ODIwNjFmNTY5Mzc2QTg3MjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3OTI5MDE5ODQyMCwibmFtZSI6Ik5FV0VTVCJ9.FGtIrIhKhgSx-10iVlI4sM_78o7jSghZsG5BpqZ4xfA';
+  const nftStorageToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdGOTA4QjNBRDJGMDFGNjE2MjU1MTA0ODIwNjFmNTY5Mzc2QTg3MjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3OTI5MDE5ODQyMCwibmFtZSI6Ik5FV0VTVCJ9.FGtIrIhKhgSx-10iVlI4sM_78o7jSghZsG5BpqZ4xfA';
   const client = new NFTStorage({ token: nftStorageToken });
 
-  const handleChange = (i, e) => {
-    const { name, value } = e.target;
+  const handleChange = (index, event) => {
+    const { name, value } = event.target;
     setMintData((prevState) => {
       const newState = [...prevState];
-      newState[i][name] = value;
+      newState[index][name] = value;
       return newState;
     });
   };
 
-  const handleFilesChange = (e) => {
-    const files = [...e.target.files];
+  const handleFilesChange = (event) => {
+    const files = [...event.target.files];
     const newMintData = files.map((file) => ({
       name: '',
       description: '',
@@ -39,26 +39,26 @@ const BatchMint = () => {
     setMintData((prevState) => [...prevState, ...newMintData]);
   };
 
-  const handleImageUpload = async (i) => {
+  const handleImageUpload = async (index) => {
     try {
-      const file = mintData[i].file;
+      const file = mintData[index].file;
       setUploading(true);
       const metadata = await client.store({
-        name: mintData[i].name,
-        description: mintData[i].description,
+        name: mintData[index].name,
+        description: mintData[index].description,
         image: new File([file], file.name, { type: file.type }),
       });
 
       setMintData((prevState) => {
         const newState = [...prevState];
-        newState[i].uri = metadata.url;
+        newState[index].uri = metadata.url;
         return newState;
       });
 
       setError(null);
     } catch (error) {
       console.error('Error while uploading image:', error);
-      setError('Error while uploading image: ' + error.message);
+      setError(`Error while uploading image: ${error.message}`);
     } finally {
       setUploading(false);
     }
@@ -80,10 +80,10 @@ const BatchMint = () => {
     });
   };
 
-  const handleRemoveFields = (i) => {
+  const handleRemoveFields = (index) => {
     setMintData((prevState) => {
       const newState = [...prevState];
-      newState.splice(i, 1);
+      newState.splice(index, 1);
       return newState;
     });
   };
@@ -92,8 +92,8 @@ const BatchMint = () => {
     setUseSharedData((prevState) => !prevState);
   };
 
-  const handleBatchMint = async (e) => {
-    e.preventDefault();
+  const handleBatchMint = async (event) => {
+    event.preventDefault();
     setLoading(true);
 
     try {
@@ -106,18 +106,27 @@ const BatchMint = () => {
         : mintData.map((data) => data.description);
       const uris = mintData.map((data) => data.uri);
 
-      await contract.methods.batchMint(names, descriptions, uris).send({ from: accounts[0] });
+      const numNFTs = mintData.length;
+      const calculatedFee = web3.utils.toWei((mintingFee * numNFTs).toString(), 'ether'); // Convert to Wei
+
+      // Call the contract method to mint NFTs with the calculated fee
+      await contract.methods
+        .batchMint(names, descriptions, uris)
+        .send({ from: accounts[0], value: calculatedFee });
 
       setMintData([]);
       setMintSuccess(true);
       setError(null);
     } catch (error) {
       console.error('Error in batch minting:', error);
-      setError('Error in batch minting: ' + error.message);
+      setError(`Error in batch minting: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
+
+  // Calculate the cost
+  const totalCost = mintingFee * mintData.length;
 
   return (
     <div className="background">
@@ -125,10 +134,16 @@ const BatchMint = () => {
         <div className="Batch-Title">
           <h1>Batch Minting</h1>
         </div>
+        <h2>Minting Fee: {mintingFee} Ether</h2>
+        <h2>Number of NFTs: {mintData.length}</h2>
+        <h2>Total Cost: {totalCost} Ether</h2> {/* Display the total cost */}
         <form onSubmit={handleBatchMint}>
           <div className="shared-data-toggle">
             {/* Use Shared Data Tooltip */}
-            <OverlayTrigger placement="top" overlay={<Tooltip id="shared-data-tooltip">Input name/description then toggle to share data across all Minted NFTs</Tooltip>}>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="shared-data-tooltip">Input name/description then toggle to share data across all Minted NFTs</Tooltip>}
+            >
               <label htmlFor="shared-data">Use Shared Data:</label>
             </OverlayTrigger>
             <input type="checkbox" id="shared-data" checked={useSharedData} onChange={handleToggle} />
@@ -145,73 +160,73 @@ const BatchMint = () => {
               aria-label="Upload Image"
             />
           </OverlayTrigger>
-        {mintData.length > 0 &&
-          mintData.map((mintField, idx) => (
-            <div key={idx} className="mint-field">
-              <label htmlFor={`name-${idx}`}>Token Name:</label>
-              <input
-                type="text"
-                id={`name-${idx}`}
-                name="name"
-                value={useSharedData ? mintData[0].name : mintField.name}
-                onChange={(e) => handleChange(idx, e)}
-                placeholder="Token Name"
-                required
-                aria-label="Token Name"
-                disabled={useSharedData}
-              />
-              <label htmlFor={`description-${idx}`}>Token Description:</label>
-              <textarea
-                id={`description-${idx}`}
-                name="description"
-                value={useSharedData ? mintData[0].description : mintField.description}
-                onChange={(e) => handleChange(idx, e)}
-                placeholder="Token Description"
-                required
-                aria-label="Token Description"
-                disabled={useSharedData}
-              />
-              <button type="button" onClick={handleAllImagesUpload} disabled={uploading}>
-                {uploading ? 'Uploading All...' : 'Upload All Images'}
-              </button>
-              {mintField.file && (
-                <div>
-                  <img
-                    src={URL.createObjectURL(mintField.file)}
-                    alt="Uploaded Token"
-                    className="uploaded-image"
-                  />
-                </div>
-              )}
-              <input
-                type="text"
-                name="uri"
-                value={mintField.uri}
-                readOnly
-                placeholder="Token URI"
-                aria-label="Token URI"
-              />
-              <button type="button" onClick={() => handleRemoveFields(idx)}>
-                Remove
-              </button>
+          {mintData.length > 0 &&
+            mintData.map((mintField, index) => (
+              <div key={index} className="mint-field">
+                <label htmlFor={`name-${index}`}>Token Name:</label>
+                <input
+                  type="text"
+                  id={`name-${index}`}
+                  name="name"
+                  value={useSharedData ? mintData[0].name : mintField.name}
+                  onChange={(event) => handleChange(index, event)}
+                  placeholder="Token Name"
+                  required
+                  aria-label="Token Name"
+                  disabled={useSharedData}
+                />
+                <label htmlFor={`description-${index}`}>Token Description:</label>
+                <textarea
+                  id={`description-${index}`}
+                  name="description"
+                  value={useSharedData ? mintData[0].description : mintField.description}
+                  onChange={(event) => handleChange(index, event)}
+                  placeholder="Token Description"
+                  required
+                  aria-label="Token Description"
+                  disabled={useSharedData}
+                />
+                <button type="button" onClick={handleAllImagesUpload} disabled={uploading}>
+                  {uploading ? 'Uploading All...' : 'Upload All Images'}
+                </button>
+                {mintField.file && (
+                  <div>
+                    <img
+                      src={URL.createObjectURL(mintField.file)}
+                      alt="Uploaded Token"
+                      className="uploaded-image"
+                    />
+                  </div>
+                )}
+                <input
+                  type="text"
+                  name="uri"
+                  value={mintField.uri}
+                  readOnly
+                  placeholder="Token URI"
+                  aria-label="Token URI"
+                />
+                <button type="button" onClick={() => handleRemoveFields(index)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+          {mintData.length === 0 && (
+            <div className="mint-field">
+              <p>No files added.</p>
             </div>
-          ))}
-        {mintData.length === 0 && (
-          <div className="mint-field">
-            <p>No files added.</p>
-          </div>
-        )}
-        <button type="button" onClick={handleAddFields}>
-          Add More Tokens
-        </button>
-        <button disabled={loading} type="submit">
-          {loading ? 'Minting...' : 'Batch Mint'}
-        </button>
-      </form>
-      {mintSuccess && <p className="success-message">Batch minting successful!</p>}
-      {error && <p className="error-message">Error: {error}</p>}
+          )}
+          <button type="button" onClick={handleAddFields}>
+            Add More Tokens
+          </button>
+          <button disabled={loading} type="submit">
+            {loading ? 'Minting...' : 'Batch Mint'}
+          </button>
+        </form>
+        {mintSuccess && <p className="success-message">Batch minting successful!</p>}
+        {error && <p className="error-message">Error: {error}</p>}
+      </div>
     </div>
-     </div>
   );
 };
 
