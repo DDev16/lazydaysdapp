@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { FiHome, FiPlusCircle, FiFolder } from 'react-icons/fi';
 import { Web3Context } from '../utils/Web3Provider.js';
 import songbirdLogo from '../assets/songbird-logo.png';
-import flareLogo from '../assets/flare-logo.png';
+import flareLogo from '../assets/flarelogo.png';
+import { FaWallet } from 'react-icons/fa';
 
 
 // Styled Components
@@ -167,7 +168,13 @@ const NavBar = () => {
         <li>
           <Link to="/my-tokens">
             <FiFolder className="nav-icon" />
-            My Tokens
+            My NFTs
+          </Link>
+        </li>
+        <li>
+          <Link to="/token-list">
+            <FaWallet className="nav-icon" />
+            Wallet
           </Link>
         </li>
       </NavLinks>

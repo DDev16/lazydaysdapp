@@ -1,0 +1,454 @@
+.nft-card {
+    width: 100%;
+    max-width: 600px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+  
+  .nft-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .nft-description {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 20px;
+  }
+  
+  .nft-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nft-info, .transaction {
+    width: 100%;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    word-break: break-all;
+  }
+  
+  .nft-field, .tx-field {
+    font-weight: 700;
+    margin-right: 10px;
+  }
+  
+  .tx-summary {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .tx-summary:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .tx-details {
+    margin-left: 20px;
+    border-left: 1px solid #ddd;
+    padding-left: 10px;
+  }
+
+  .tx-summary:active {
+    background-color: #e0e0e0;
+}
+
+.tx-summary:focus {
+    outline: 2px solid #aaa;
+}
+
+.block-hash {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+    word-break: break-all;
+
+}
+  @media (max-width: 600px) {
+    .nft-card {
+      padding: 10px;
+      margin: 10px;
+    }
+  
+    .nft-name {
+      font-size: 20px;
+    }
+  
+    .nft-description {
+      font-size: 14px;
+    }
+  
+    .tx-details {
+      margin-left: 10px;
+      padding-left: 5px;
+    }
+  }
+  
+
+  @media (max-width: 900px) {
+    .nft-card {
+      padding: 15px;
+    }
+  
+    .nft-name {
+      font-size: 22px;
+    }
+  
+    .nft-description {
+      font-size: 15px;
+    }
+  
+    .tx-details {
+      margin-left: 15px;
+      padding-left: 7px;
+    }
+}
+
+/* NFTList.css */
+
+.nft-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .nft-list select {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .nft-list select option {
+    font-size: 16px;
+  }
+  
+  .nft-list .loading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .nft-list .error {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .nft-list .no-results {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* TokenCard.css */
+  
+  .token-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .token-card img {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+  }
+  
+  .token-card .name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .token-card .description {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .token-card .transaction-history {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .token-card .transaction {
+    margin-bottom: 5px;
+  }
+  
+
+
+  .token-select {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .loading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .no-results {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  /* NFTCard.css */
+.nft-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .token-select {
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .loading {
+    font-size: 20px;
+    color: #555;
+    margin: 20px;
+  }
+  
+  .error {
+    font-size: 20px;
+    color: #ff0000;
+    margin: 20px;
+  }
+  
+  .no-results {
+    font-size: 20px;
+    color: #555;
+    margin: 20px;
+  }
+  
+  /* TokenCard.css */
+  .token-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 20px;
+  }
+  
+  .token-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .token-image {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+  }
+  
+  .token-description {
+    font-size: 16px;
+    text-align: center;
+    color: #555;
+  }
+  
+
+
+  /* NFTCard.css */
+.nft-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .token-select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #555;
+    margin-bottom: 20px;
+    width: 300px;
+  }
+  
+  .loading {
+    font-size: 20px;
+    color: #555;
+    margin: 20px;
+  }
+  
+  .error {
+    font-size: 20px;
+    color: #ff0000;
+    margin: 20px;
+  }
+  
+  .no-results {
+    font-size: 20px;
+    color: #555;
+    margin: 20px;
+  }
+  
+  /* TokenCard.css */
+  .token-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 20px;
+    max-width: 400px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .token-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .token-image {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .token-description {
+    font-size: 16px;
+    text-align: center;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .token-metadata {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .token-metadata-label {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .token-metadata-value {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .token-history {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .token-history-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .token-history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .token-history-item .tx-hash {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .token-history-item .tx-time {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .token-history-item .tx-status {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .token-history-item .tx-status.success {
+    color: #0a0;
+  }
+  
+  .token-history-item .tx-status.failure {
+    color: #f00;
+  }
+
+
+  .nft-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .token-select {
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 16px;
+  }
+  
+  .token-select option {
+    font-size: 16px;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .input-group input {
+    padding: 8px;
+    font-size: 16px;
+  }
+  
+  .send-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .send-button:hover {
+    background-color: #45a049;
+  }
+  
+  

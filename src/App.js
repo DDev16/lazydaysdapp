@@ -8,7 +8,8 @@ import MyTokens from './components/MyTokens';
 import Home from './components/Home';
 import Footer from './components/Footer/Footer.js';
 // import DeployContract from './components/deploy/DeployContract.js';
-
+import './components/TokenList.js'
+import TokenList from './components/TokenList.js';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/mint" element={<Mint />} />
           <Route path="/batch-mint" element={<BatchMint />} />
           <Route path="/my-tokens" element={<MyTokens />} />
+          <Route path="/token-list" element={<TokenList />} />
           {/* <Route path="/deploy-contract" element={<DeployContract />} /> */}
 
         </Routes>
