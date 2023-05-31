@@ -144,9 +144,6 @@ function NFTList() {
           </option>
         ))}
       </select>
-
-      {selectedNFT && <TokenCard nft={selectedNFT} />}
-
       {selectedToken && selectedNFT.type === 'ERC-20' && (
         <div className="input-group">
           <input
@@ -166,6 +163,9 @@ function NFTList() {
           </button>
         </div>
       )}
+      {selectedNFT && <TokenCard nft={selectedNFT} />}
+
+     
     </div>
   );
 }
