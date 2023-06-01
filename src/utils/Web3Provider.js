@@ -7,12 +7,17 @@ export const Web3Context = createContext();
 const Web3Provider = ({ children }) => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const initializeWeb3 = async () => {
       if (window.ethereum) {
         const web3Instance = new Web3(window.ethereum);
-        await window.ethereum.enable();
+
+        if (!initialized) {
+          await window.ethereum.enable();
+          setInitialized(true);
+        }
         setWeb3(web3Instance);
         setContract(null); // Reset contract when network changes
 
@@ -47,7 +52,7 @@ const Web3Provider = ({ children }) => {
     };
 
     initializeWeb3();
-  }, []);
+  }, [initialized]);
 
   return (
     <Web3Context.Provider value={{ web3, contract }}>

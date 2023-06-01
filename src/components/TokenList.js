@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TokenCard from './TokenCard';
 import './NFTCard.css';
+import Loading from './Loading';
 
 function NFTList() {
   const [nfts, setNfts] = useState([]);
@@ -121,9 +122,8 @@ function NFTList() {
   };
 
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return <Loading />;
   }
-
   if (error) {
     return <div className="error">Error: {error}</div>;
   }
@@ -152,7 +152,9 @@ function NFTList() {
             value={recipientAddress}
             onChange={handleRecipientAddressChange}
           />
+          
           <input
+          className='amount-input'
             type="number"
             placeholder="Amount to Send"
             value={amountToSend}
@@ -169,5 +171,7 @@ function NFTList() {
     </div>
   );
 }
+
+
 
 export default NFTList;
