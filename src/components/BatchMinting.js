@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { File, NFTStorage } from 'nft.storage';
-
+import Loading from './Loading';
 import { Web3Context } from '../utils/Web3Provider';
 import './BatchMint.css';
+import MintingLoading from './MintingLoading';
 
 const BatchMint = () => {
   const { web3, contract } = useContext(Web3Context);
@@ -186,9 +187,16 @@ const BatchMint = () => {
                   aria-label="Token Description"
                   disabled={useSharedData}
                 />
-                <button type="button" onClick={handleAllImagesUpload} disabled={uploading}>
-                  {uploading ? 'Uploading All...' : 'Upload All Images'}
-                </button>
+                {
+  uploading 
+    ? <Loading /> 
+    : (
+      <button type="button" onClick={handleAllImagesUpload} disabled={uploading}>
+        Upload All Images
+      </button>
+    )
+}
+
                 {mintField.file && (
                   <div>
                     <img
@@ -219,9 +227,16 @@ const BatchMint = () => {
           <button type="button" onClick={handleAddFields}>
             Add More Tokens
           </button>
-          <button disabled={loading} type="submit">
-            {loading ? 'Minting...' : 'Batch Mint'}
-          </button>
+          {
+  loading 
+    ? <MintingLoading /> 
+    : (
+      <button type="submit">
+        Batch Mint
+      </button>
+    )
+}
+
         </form>
         {mintSuccess && <p className="success-message">Batch minting successful!</p>}
         {error && <p className="error-message">Error: {error}</p>}

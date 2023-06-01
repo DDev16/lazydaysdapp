@@ -268,11 +268,7 @@ background: url('../assets/stock_back_low.gif');
     margin-bottom: 10px;
   }
   
-  .amount-input {
-    flex-basis: 50%;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
+
   
   .input-group button {
     padding: 10px 20px;

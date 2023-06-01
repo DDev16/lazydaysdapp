@@ -1,6 +1,6 @@
 /* BatchMint.css */
 :root {
-    --main-bg-color: #f5f7fa;
+  --main-bg-color: rgba(255, 255, 255, 0.5); /* This represents white with 50% opacity */
     --main-font-color: #303030;
     --secondary-font-color: #606060;
     --accent-color: #007bff;
@@ -51,6 +51,7 @@
     background-color: var(--main-bg-color);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--main-font-color);
+    width: 70%;
   }
   
   .BatchMint form {
@@ -152,6 +153,12 @@
   @media (max-width: 768px) {
     .BatchMint form {
       padding: 1em;
+    }
+
+
+
+    .BatchMint {
+      width: 100%;
     }
   
     .BatchMint input,
